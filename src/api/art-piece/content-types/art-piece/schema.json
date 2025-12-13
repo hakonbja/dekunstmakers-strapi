@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "art_pieces",
+  "info": {
+    "singularName": "art-piece",
+    "pluralName": "art-pieces",
+    "displayName": "Art piece"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "artist": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::artist.artist",
+      "inversedBy": "art_pieces"
+    }
+  }
+}
