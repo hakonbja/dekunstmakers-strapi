@@ -122,6 +122,9 @@ coverage
 ############################
 
 .env
+.env.*
+.env.bak*
+*.env.bak
 license.txt
 exports
 .strapi
