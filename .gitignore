@@ -125,6 +125,7 @@ coverage
 .env.*
 .env.bak*
 *.env.bak
+docker-compose.override.yml
 license.txt
 exports
 .strapi
