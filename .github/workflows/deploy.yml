@@ -1,0 +1,72 @@
+name: Deploy to Hetzner
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to deploy (leave empty for latest release, or enter specific tag like v1.0.0)'
+        required: false
+        type: string
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Get latest release tag
+        id: get_tag
+        if: github.event.inputs.release_tag == ''
+        run: |
+          TAG=$(gh api repos/${{ github.repository }}/releases/latest --jq .tag_name)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set deployment tag
+        id: set_tag
+        run: |
+          if [ -n "${{ github.event.inputs.release_tag }}" ]; then
+            echo "tag=${{ github.event.inputs.release_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ steps.get_tag.outputs.tag }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.set_tag.outputs.tag }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:${{ steps.set_tag.outputs.tag }}
+            ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:buildcache,mode=max
+
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /root/dekunstmakers-strapi
+            docker pull ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:${{ steps.set_tag.outputs.tag }}
+            docker tag ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:${{ steps.set_tag.outputs.tag }} ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:latest
+            docker-compose restart strapi
+            docker-compose logs --tail=50 strapi
+
