@@ -64,9 +64,9 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /root/dekunstmakers-strapi
             docker pull ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:${{ steps.set_tag.outputs.tag }}
             docker tag ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:${{ steps.set_tag.outputs.tag }} ghcr.io/${{ github.repository_owner }}/dekunstmakers-strapi:latest
+            cd /root/dekunstmakers-infra
             docker-compose up -d strapi
             docker-compose logs --tail=50 strapi
 
