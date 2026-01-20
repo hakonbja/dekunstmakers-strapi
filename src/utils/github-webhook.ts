@@ -1,13 +1,13 @@
 /**
  * Utility to trigger GitHub Actions workflow via repository_dispatch
  */
-export const triggerFrontendRebuild = async () => {
+export const triggerFrontendRebuild = async (strapi?: any) => {
   const githubToken = process.env.GITHUB_TOKEN;
   const githubOwner = process.env.GITHUB_OWNER;
   const githubRepo = process.env.GITHUB_REPO;
 
   if (!githubToken || !githubOwner) {
-    strapi.log.warn(
+    (strapi?.log || console).warn(
       'GitHub webhook not configured. Set GITHUB_TOKEN and GITHUB_OWNER environment variables.'
     );
     return;
@@ -31,14 +31,14 @@ export const triggerFrontendRebuild = async () => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      strapi.log.error(
+      (strapi?.log || console).error(
         `Failed to trigger GitHub workflow: ${response.status} ${errorText}`
       );
       return;
     }
 
-    strapi.log.info('Successfully triggered frontend rebuild via GitHub webhook');
+    (strapi?.log || console).info('Successfully triggered frontend rebuild via GitHub webhook');
   } catch (error) {
-    strapi.log.error('Error triggering GitHub webhook:', error);
+    (strapi?.log || console).error('Error triggering GitHub webhook:', error);
   }
 };
