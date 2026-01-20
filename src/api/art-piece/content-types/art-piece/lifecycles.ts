@@ -10,10 +10,4 @@ export default {
   async afterDelete() {
     await triggerFrontendRebuild();
   },
-  async afterPublish() {
-    await triggerFrontendRebuild();
-  },
-  async afterUnpublish() {
-    await triggerFrontendRebuild();
-  },
 };
