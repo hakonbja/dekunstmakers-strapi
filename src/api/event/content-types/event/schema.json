@@ -11,21 +11,31 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
+    "title": {
       "type": "string",
       "required": true
     },
-    "Date": {
+    "date": {
       "type": "date",
       "required": true
     },
-    "Location": {
+    "location": {
       "type": "string",
       "required": true
     },
-    "Description": {
+    "description": {
       "type": "text",
       "required": true
+    },
+    "website": {
+      "type": "string",
+      "required": true
+    },
+    "art_pieces": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::art-piece.art-piece",
+      "mappedBy": "event"
     }
   }
 }

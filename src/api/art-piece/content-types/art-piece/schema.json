@@ -15,6 +15,10 @@
       "type": "string",
       "required": true
     },
+    "description": {
+      "type": "text",
+      "required": true
+    },
     "date": {
       "type": "date"
     },
@@ -27,14 +31,25 @@
         "files"
       ]
     },
-    "description": {
-      "type": "text",
-      "required": true
+    "size": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    },
+    "sold": {
+      "type": "boolean"
     },
     "artist": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::artist.artist",
+      "inversedBy": "art_pieces"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
       "inversedBy": "art_pieces"
     }
   }
