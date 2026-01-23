@@ -41,6 +41,26 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "intro": {
+      "type": "string",
+      "required": true
+    },
+    "biography": {
+      "type": "richtext",
+      "required": true
+    },
+    "biographyImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }

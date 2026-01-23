@@ -476,6 +476,7 @@ export interface ApiArtPieceArtPiece extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     date: Schema.Attribute.Date;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
     images: Schema.Attribute.Media<'images' | 'files', true> &
       Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -485,6 +486,9 @@ export interface ApiArtPieceArtPiece extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    size: Schema.Attribute.String;
+    sold: Schema.Attribute.Boolean;
+    technology: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -507,12 +511,16 @@ export interface ApiArtistArtist extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::art-piece.art-piece'
     >;
+    biography: Schema.Attribute.RichText & Schema.Attribute.Required;
+    biographyImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.Required;
     coverImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     email: Schema.Attribute.Email & Schema.Attribute.Required;
     firstName: Schema.Attribute.String & Schema.Attribute.Required;
+    intro: Schema.Attribute.String & Schema.Attribute.Required;
     lastName: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -522,6 +530,7 @@ export interface ApiArtistArtist extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'firstName'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -539,20 +548,25 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    art_pieces: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::art-piece.art-piece'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Date: Schema.Attribute.Date & Schema.Attribute.Required;
-    Description: Schema.Attribute.Text & Schema.Attribute.Required;
+    date: Schema.Attribute.Date & Schema.Attribute.Required;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::event.event'> &
       Schema.Attribute.Private;
-    Location: Schema.Attribute.String & Schema.Attribute.Required;
+    location: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    Title: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    website: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
