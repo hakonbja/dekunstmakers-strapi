@@ -487,6 +487,7 @@ export interface ApiArtPieceArtPiece extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     size: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     sold: Schema.Attribute.Boolean;
     technology: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
