@@ -51,6 +51,11 @@
       "relation": "manyToOne",
       "target": "api::event.event",
       "inversedBy": "art_pieces"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
     }
   }
 }
