@@ -46,9 +46,9 @@
       "target": "api::artist.artist",
       "inversedBy": "art_pieces"
     },
-    "event": {
+    "events": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::event.event",
       "inversedBy": "art_pieces"
     },

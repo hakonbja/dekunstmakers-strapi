@@ -19,6 +19,9 @@
       "type": "date",
       "required": true
     },
+    "endDate": {
+      "type": "date"
+    },
     "location": {
       "type": "string",
       "required": true
@@ -33,9 +36,14 @@
     },
     "art_pieces": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::art-piece.art-piece",
-      "mappedBy": "event"
+      "mappedBy": "events"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
     }
   }
 }
